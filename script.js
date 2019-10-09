@@ -16,47 +16,100 @@ class Player
     {
         return parseFloat(this.element.style.bottom);
     }
-}
 
-let jump = (player, force) =>
-{
-    return new Promise((resolve, reject) =>
+    set right(value)
     {
-        let speed = force / 10;
+        this.element.style.right = value + 'px';
+    }
+
+    get right()
+    {
+        return parseFloat(this.element.style.right);
+    }
+
+    set left(value)
+    {
+        this.element.style.left = value + 'px';
+    }
+
+    get left()
+    {
+        return parseFloat(this.element.style.left);
+    }
+
+    jump(force)
+    {
+        return new Promise((resolve, reject) =>
+        {
+            let speed = force / 10;
+            let interval = setInterval(() =>
+            {
+                if (player.bottom >= force)
+                {
+                    player.bottom = force;
+                    clearInterval(interval);
+                    resolve();
+                }
+
+                player.bottom += speed;
+            }, 10);
+        });
+    }
+
+    fall(gravitation)
+    {
+        return new Promise((resolve, reject) =>
+        {
+            let interval = setInterval(() =>
+            {
+                if (this.bottom <= 0)
+                {
+                    clearInterval(interval);
+                    resolve();
+                }
+        
+                gravitation += 1.8;
+        
+                this.bottom = (this.bottom - gravitation).toFixed(2);
+            }, 10);
+        });
+    }
+
+    moveRight(speed)
+    {
+        let path = speed * 10;
+        let i = speed;
         let interval = setInterval(() =>
         {
-            if (player.bottom >= force)
+            if (i >= path)
             {
-                player.bottom = force;
                 clearInterval(interval);
-                resolve();
             }
-
-            player.bottom = player.bottom + speed;
+            this.left += i;
+            i += 1;
         }, 10);
-    });
-}
+    }
 
-let fall = (player, gravitation) =>
-{
-    let interval = setInterval(() =>
+    moveLeft(speed)
     {
-        if (player.bottom <= 0)
+        let positionBegin = this.left;
+        let path = speed * 10;
+        let i = speed;
+        let interval = setInterval(() =>
         {
-            player.bottom = 0;
-            clearInterval(interval);
-        }
-
-        gravitation += 1.8;
-
-        player.bottom = (player.bottom - gravitation).toFixed(2);
-        console.log(player.bottom);
-    }, 10);
+            if (i <= positionBegin - path)
+            {
+                clearInterval(interval);
+            }
+            this.left -= i;
+            i -= 1;
+        }, 10);
+    }
 }
 
 let gravitation = 1.8;
 let force = 200;
-let speed = 200;
+let speed = 5;
 
 let player = new Player();
 
@@ -65,25 +118,21 @@ document.addEventListener('keydown', (event) =>
     switch (event.keyCode)
     {
         case 38: // Top
-            jump(player, force)
+            player.jump(force)
             .then(
-                (result) => 
+                () => 
                 {
-                    fall(player, gravitation);
-                },
-                (error) =>
-                {
-                    console.log(error);
+                    player.fall(gravitation).then(() => { player.bottom = 0; });
                 }
             );
             break;
 
         case 37: // Left
-
+            player.moveLeft(speed);
             break;
         
         case 39: // Right
-
+            player.moveRight(speed);
             break;
     }
 });
