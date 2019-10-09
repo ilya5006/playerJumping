@@ -58,12 +58,14 @@ class Player
 
     fall(gravitation)
     {
+        document.removeEventListener('keydown', buttonClickTopTracking);
         return new Promise((resolve, reject) =>
         {
             let interval = setInterval(() =>
             {
                 if (this.bottom <= 0)
                 {
+                    document.addEventListener('keydown', buttonClickTopTracking);
                     clearInterval(interval);
                     resolve();
                 }
@@ -77,14 +79,14 @@ class Player
 
     moveRight(speed)
     {
-        document.removeEventListener('keydown', buttonClickTracking);
+        document.removeEventListener('keydown', buttonClickLeftAndRightTracking);
         let path = this.left + speed * 10;
         let i = speed;
         let interval = setInterval(() =>
         {
             if (this.left >= path)
             {
-                document.addEventListener('keydown', buttonClickTracking);
+                document.addEventListener('keydown', buttonClickLeftAndRightTracking);
                 clearInterval(interval);
             }
             this.left += i;
@@ -93,14 +95,14 @@ class Player
 
     moveLeft(speed)
     {
-        document.removeEventListener('keydown', buttonClickTracking);
+        document.removeEventListener('keydown', buttonClickLeftAndRightTracking);
         let path = this.left - speed * 10;
         let i = speed;
         let interval = setInterval(() =>
         {
             if (this.left <= path)
             {
-                document.addEventListener('keydown', buttonClickTracking);
+                document.addEventListener('keydown', buttonClickLeftAndRightTracking);
                 clearInterval(interval);
             }
             this.left -= i;
@@ -114,7 +116,21 @@ let speed = 10;
 
 let player = new Player();
 
-let buttonClickTracking = (event) =>
+let buttonClickLeftAndRightTracking = (event) =>
+{
+    switch (event.keyCode)
+    {
+        case 37: // Left
+            player.moveLeft(speed);
+            break;
+        
+        case 39: // Right
+            player.moveRight(speed);
+            break;
+    }
+}
+
+let buttonClickTopTracking = (event) =>
 {
     switch (event.keyCode)
     {
@@ -127,42 +143,8 @@ let buttonClickTracking = (event) =>
                 }
             );
             break;
-
-        case 37: // Left
-            player.moveLeft(speed);
-            break;
-        
-        case 39: // Right
-            player.moveRight(speed);
-            break;
     }
 }
 
-document.addEventListener('keydown', buttonClickTracking);
-
-// document.addEventListener('keydown', (event) =>
-// {
-//     switch (event.keyCode)
-//     {
-//         case 38: // Top
-//             player.jump(force)
-//             .then(
-//                 () => 
-//                 {
-//                     player.fall(gravitation).then(() => { player.bottom = 0; });
-//                 }
-//             );
-//             break;
-
-//         case 37: // Left
-//             player.moveLeft(speed);
-//             break;
-        
-//         case 39: // Right
-//             player.moveRight(speed);
-//             break;
-//     }
-// });
-
-
-
+document.addEventListener('keydown', buttonClickLeftAndRightTracking);
+document.addEventListener('keydown', buttonClickTopTracking);
