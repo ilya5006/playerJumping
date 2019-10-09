@@ -77,32 +77,29 @@ class Player
 
     moveRight(speed)
     {
-        let path = speed * 10;
+        let path = this.left + speed * 10;
         let i = speed;
         let interval = setInterval(() =>
         {
-            if (i >= path)
+            if (this.left >= path)
             {
                 clearInterval(interval);
             }
             this.left += i;
-            i += 1;
         }, 10);
     }
 
     moveLeft(speed)
     {
-        let positionBegin = this.left;
-        let path = speed * 10;
+        let path = this.left - speed * 10;
         let i = speed;
         let interval = setInterval(() =>
         {
-            if (i <= positionBegin - path)
+            if (this.left <= path)
             {
                 clearInterval(interval);
             }
             this.left -= i;
-            i -= 1;
         }, 10);
     }
 }
