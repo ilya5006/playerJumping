@@ -44,36 +44,46 @@ let fall = (player, gravitation) =>
         if (player.bottom <= 0)
         {
             player.bottom = 0;
-            console.log(player.bottom);
             clearInterval(interval);
         }
 
         gravitation += 1.8;
 
-        player.bottom = player.bottom - gravitation;
-
+        player.bottom = (player.bottom - gravitation).toFixed(2);
+        console.log(player.bottom);
     }, 10);
 }
 
 let gravitation = 1.8;
-let force = 150;
+let force = 200;
+let speed = 200;
 
 let player = new Player();
 
 document.addEventListener('keydown', (event) =>
 {
-    if (event.keyCode == '38')
+    switch (event.keyCode)
     {
-        jump(player, force)
-        .then(
-            (result) => 
-            {
-                fall(player, gravitation);
-            },
-            (error) =>
-            {
-                console.log(error);
-            }
-        );
+        case 38: // Top
+            jump(player, force)
+            .then(
+                (result) => 
+                {
+                    fall(player, gravitation);
+                },
+                (error) =>
+                {
+                    console.log(error);
+                }
+            );
+            break;
+
+        case 37: // Left
+
+            break;
+        
+        case 39: // Right
+
+            break;
     }
 });
