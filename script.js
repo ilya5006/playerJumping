@@ -110,11 +110,36 @@ class Player
     }
 }
 
+class Platform
+{
+    /**
+     * RU
+     * Конструктор, который создаёт платформу
+     * @constructor
+     * 
+     */
+    constructor()
+    {
+        this.element = document.createElement('div');
+
+        this.element.style.border = '2px solid green';
+        this.element.style.bottom = '60px';
+        this.element.style.left = '80px';
+        this.element.style.width = '200px';
+        this.element.style.height = '50px';
+        this.element.style.position = 'absolute';
+
+        document.querySelector('body').insertAdjacentElement('afterBegin', this.element);
+    }
+
+}
+
 let gravitation = 1.8;
 let force = 200;
 let speed = 10;
 
 let player = new Player();
+let platform = new Platform();
 
 let buttonClickLeftAndRightTracking = (event) =>
 {
