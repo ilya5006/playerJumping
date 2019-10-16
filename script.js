@@ -1,5 +1,10 @@
 class Player 
 {
+    /**
+     * RU
+     * Конструктор, который создаёт персонажа
+     * @constructor
+     */
     constructor()
     {
         this.element = document.querySelector('#player');
@@ -37,6 +42,13 @@ class Player
         return parseFloat(this.element.style.left);
     }
 
+
+    /**
+     * RU
+     * Метод перемещает персонажа вверх в соответствии с силой, которую прилагает
+     * @param {number} force - Сила, которую прилагает персонаж для прыжка 
+     * 
+     */
     jump(force)
     {
         return new Promise((resolve, reject) =>
@@ -56,8 +68,15 @@ class Player
         });
     }
 
+    /**
+     * RU
+     * Метод перемещает персонажа вниз после прыжка в соответствии с гравитацией, которая действует на неё
+     * @param {number} gravitation - Гравитация, которая действует на персонажа. В зависимости от неё, персонаж будет падать либо сильнее, либо медленнее
+     * 
+     */
     fall(gravitation)
     {
+        let defaultGravitation = gravitation;
         document.removeEventListener('keydown', buttonClickTopTracking);
         return new Promise((resolve, reject) =>
         {
@@ -70,13 +89,19 @@ class Player
                     resolve();
                 }
         
-                gravitation += 1.8;
+                gravitation += defaultGravitation;
         
                 this.bottom = (this.bottom - gravitation).toFixed(2);
             }, 10);
         });
     }
 
+    /**
+     * RU
+     * Метод перемещает персонажа вправо в соответствии со скоростью
+     * @param {number} speed - Скорость, с которй персонаж двигается
+     * 
+     */
     moveRight(speed)
     {
         document.removeEventListener('keydown', buttonClickLeftAndRightTracking);
@@ -93,6 +118,12 @@ class Player
         }, 10);
     }
 
+    /**
+     * RU
+     * Метод перемещает персонажа влево в соответствии со скоростью
+     * @param {number} speed - Скорость, с которй персонаж двигается
+     * 
+     */
     moveLeft(speed)
     {
         document.removeEventListener('keydown', buttonClickLeftAndRightTracking);
