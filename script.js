@@ -16,6 +16,15 @@ class Collision
 
 let collisions = [];
 
+let checkCollisions = (player, positionInTheFuture) =>
+{
+    collisions.forEach(collision)
+    {
+        let leftCollision = positionInTheFuture >= collision.left + collisions.width;
+        let rightCollision = positionInTheFuture <= collision.left + collisions.width;
+    }
+}
+
 class Player 
 {
     /**
@@ -126,12 +135,16 @@ class Player
         let i = speed;
         let interval = setInterval(() =>
         {
-            if (this.left >= path)
+            if (!checkCollisions(this), this.left + i)
             {
-                document.addEventListener('keydown', buttonClickLeftAndRightTracking);
-                clearInterval(interval);
+                if (this.left >= path)
+                {
+                    document.addEventListener('keydown', buttonClickLeftAndRightTracking);
+                    clearInterval(interval);
+                }
+
+                this.left += i;
             }
-            this.left += i;
         }, 10);
     }
 
@@ -146,14 +159,19 @@ class Player
         document.removeEventListener('keydown', buttonClickLeftAndRightTracking);
         let path = this.left - speed * 10;
         let i = speed;
+        
         let interval = setInterval(() =>
         {
-            if (this.left <= path)
+            if (!checkCollisions(this), this.left - i)
             {
-                document.addEventListener('keydown', buttonClickLeftAndRightTracking);
-                clearInterval(interval);
+                if (this.left <= path)
+                {
+                    document.addEventListener('keydown', buttonClickLeftAndRightTracking);
+                    clearInterval(interval);
+                }
+
+                this.left -= i;
             }
-            this.left -= i;
         }, 10);
     }
 }
@@ -232,11 +250,14 @@ let player = new Player();
 let platformGreen = new Platform(50, 200, 60, 80, 'green');
 new Collision(platformGreen.height, platformGreen.width, platformGreen.bottom, platformGreen
     .left).appendCollision();
+
 let platformYelllow = new Platform(50, 200, 250, 250, 'red');
 new Collision(platformYelllow.height, platformYelllow.width, platformYelllow.bottom, platformYelllow
     .left).appendCollision();
 
-console.log(collisions);
+let platformBlack = new Platform(50, 200, 60, 900, 'black');
+new Collision(platformBlack.height, platformBlack.width, platformBlack.bottom, platformBlack
+    .left).appendCollision();
 
 let buttonClickLeftAndRightTracking = (event) =>
 {
