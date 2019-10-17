@@ -42,7 +42,6 @@ class Player
         return parseFloat(this.element.style.left);
     }
 
-
     /**
      * RU
      * Метод перемещает персонажа вверх в соответствии с силой, которую прилагает
@@ -149,38 +148,85 @@ class Platform
      * @constructor
      * 
      */
-    constructor()
+    constructor(height, width, bottom, left, color)
     {
         this.element = document.createElement('div');
 
-        this.element.style.border = '2px solid green';
-        this.element.style.bottom = '60px';
-        this.element.style.left = '80px';
-        this.element.style.width = '200px';
-        this.element.style.height = '50px';
+        this.element.style.border = `2px solid ${color}`;
+        this.bottom = bottom;
+        this.left = left;
+        this.width = width;
+        this.height = height;
         this.element.style.position = 'absolute';
 
         document.querySelector('body').insertAdjacentElement('afterBegin', this.element);
     }
 
+    set width(value)
+    {
+        this.element.style.width = value + 'px'; 
+    }
+
+    get width()
+    {
+        return parseFloat(this.element.style.width);
+    }
+
+    set height(value)
+    {
+        this.element.style.height = value + 'px'; 
+    }
+
+    get height()
+    {
+        return parseFloat(this.element.style.height);
+    }
+
+    set bottom(value)
+    {
+        this.element.style.bottom = value + 'px'; 
+    }
+
+    get bottom()
+    {
+        return parseFloat(this.element.style.bottom);
+    }
+
+    set left(value)
+    {
+        this.element.style.left = value + 'px';
+    }
+
+    get left()
+    {
+        return parseFloat(this.element.style.left);
+    }
 }
 
+// let gravitation = 1.8;
+// let force = 200;
+// let speed = 10;
+
 let gravitation = 1.8;
-let force = 200;
-let speed = 10;
+let force = 350;
+let speed = 45;
+let overclock = 0;
 
 let player = new Player();
-let platform = new Platform();
+let platformGreen = new Platform(50, 200, 60, 80, 'green');
+let platformYelllow = new Platform();
 
 let buttonClickLeftAndRightTracking = (event) =>
 {
     switch (event.keyCode)
     {
         case 37: // Left
+            overclock++;
             player.moveLeft(speed);
             break;
         
         case 39: // Right
+            overclock++;
             player.moveRight(speed);
             break;
     }
