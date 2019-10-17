@@ -1,3 +1,21 @@
+class Collision
+{
+    constructor(height, width, bottom, left)
+    {
+        this.bottom = bottom;
+        this.left = left;
+        this.width = width;
+        this.height = height;
+    }
+
+    appendCollision()
+    {
+        collisions.push([this.bottom, this.left, this.width, this.height]);
+    }
+}
+
+let collisions = [];
+
 class Player 
 {
     /**
@@ -203,18 +221,22 @@ class Platform
     }
 }
 
-// let gravitation = 1.8;
-// let force = 200;
-// let speed = 10;
-
 let gravitation = 1.8;
-let force = 350;
-let speed = 45;
+let force = 200;
+let speed = 10;
+
 let overclock = 0;
 
 let player = new Player();
+
 let platformGreen = new Platform(50, 200, 60, 80, 'green');
-let platformYelllow = new Platform();
+new Collision(platformGreen.height, platformGreen.width, platformGreen.bottom, platformGreen
+    .left).appendCollision();
+let platformYelllow = new Platform(50, 200, 250, 250, 'red');
+new Collision(platformYelllow.height, platformYelllow.width, platformYelllow.bottom, platformYelllow
+    .left).appendCollision();
+
+console.log(collisions);
 
 let buttonClickLeftAndRightTracking = (event) =>
 {
